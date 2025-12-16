@@ -37,7 +37,7 @@ FBox UStreetMapRoadsPCGData::GetBounds() const
 bool UStreetMapRoadsPCGData::SamplePoint(const FTransform& Transform, const FBox& Bounds, FPCGPoint& OutPoint, UPCGMetadata* OutMetadata) const
 {
 	// Basic sampling implementation
-	if (!CachedBounds.IsValid || !Bounds.Intersect(CachedBounds))
+	if (!CachedBounds.IsValidBox() || !Bounds.Intersect(CachedBounds))
 	{
 		return false;
 	}
@@ -84,7 +84,7 @@ UPCGPointData* UStreetMapRoadsPCGData::CreatePointDataFromRoads(FPCGContext* Con
 			FVector Location(RoadPoint.X, RoadPoint.Y, 0.0f);
 			
 			// Check bounds filter
-			if (InBounds.IsValid && !InBounds.IsInsideOrOn(Location))
+			if (InBounds.IsValidBox() && !InBounds.IsInsideOrOn(Location))
 			{
 				continue;
 			}
@@ -157,7 +157,7 @@ FBox UStreetMapBuildingsPCGData::GetBounds() const
 bool UStreetMapBuildingsPCGData::SamplePoint(const FTransform& Transform, const FBox& Bounds, FPCGPoint& OutPoint, UPCGMetadata* OutMetadata) const
 {
 	// Basic sampling implementation
-	if (!CachedBounds.IsValid || !Bounds.Intersect(CachedBounds))
+	if (!CachedBounds.IsValidBox() || !Bounds.Intersect(CachedBounds))
 	{
 		return false;
 	}
@@ -212,7 +212,7 @@ UPCGPointData* UStreetMapBuildingsPCGData::CreatePointDataFromBuildings(FPCGCont
 		FVector Location(Centroid.X, Centroid.Y, 0.0f);
 		
 		// Check bounds filter
-		if (InBounds.IsValid && !InBounds.IsInsideOrOn(Location))
+		if (InBounds.IsValidBox() && !InBounds.IsInsideOrOn(Location))
 		{
 			continue;
 		}

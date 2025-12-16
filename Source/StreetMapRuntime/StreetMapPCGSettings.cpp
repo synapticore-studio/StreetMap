@@ -30,7 +30,6 @@ TArray<FPCGPinProperties> UPCGStreetMapSettings::OutputPinProperties() const
 	if (bOutputRoads)
 	{
 		FPCGPinProperties& RoadsPin = PinProperties.Emplace_GetRef(TEXT("Roads"), EPCGDataType::Point);
-		RoadsPin.SetAdvancedPin();
 #if WITH_EDITOR
 		RoadsPin.Tooltip = NSLOCTEXT("PCGStreetMapSettings", "RoadsPin", "Road points with metadata (RoadName, RoadType, RoadIndex, PointIndex, IsOneWay)");
 #endif
@@ -39,7 +38,6 @@ TArray<FPCGPinProperties> UPCGStreetMapSettings::OutputPinProperties() const
 	if (bOutputBuildings)
 	{
 		FPCGPinProperties& BuildingsPin = PinProperties.Emplace_GetRef(TEXT("Buildings"), EPCGDataType::Point);
-		BuildingsPin.SetAdvancedPin();
 #if WITH_EDITOR
 		BuildingsPin.Tooltip = NSLOCTEXT("PCGStreetMapSettings", "BuildingsPin", "Building centroids with metadata (BuildingName, Height, BuildingLevels, BuildingIndex, VertexCount)");
 #endif

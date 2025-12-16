@@ -165,7 +165,9 @@ bool UStreetMapSubsystem::FindNearestRoadPoint(const FVector& WorldLocation, int
 	}
 
 	const TArray<FStreetMapRoad>& Roads = StreetMap->GetRoads();
-	float BestDistanceSquared = MaxSearchDistance > 0.0f ? MaxSearchDistance * MaxSearchDistance : MAX_flt;
+	// Use a reasonable maximum search distance (1km squared) if none specified to avoid performance issues
+	constexpr float DefaultMaxSearchDistanceSquared = 100000.0f * 100000.0f;  // 1km in cm squared
+	float BestDistanceSquared = MaxSearchDistance > 0.0f ? MaxSearchDistance * MaxSearchDistance : DefaultMaxSearchDistanceSquared;
 	FVector2D Location2D(WorldLocation.X, WorldLocation.Y);
 
 	for (int32 RoadIndex = 0; RoadIndex < Roads.Num(); ++RoadIndex)
