@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "PCGSettings.h"
+#include "StreetMap.h"
 #include "StreetMapPCGSettings.generated.h"
-
-class UStreetMap;
 
 /**
  * Settings for getting street map data in PCG graphs

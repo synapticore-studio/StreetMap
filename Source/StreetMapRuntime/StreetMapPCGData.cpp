@@ -93,7 +93,8 @@ UPCGPointData* UStreetMapRoadsPCGData::CreatePointDataFromRoads(FPCGContext* Con
 			NewPoint.Transform = FTransform(Location);
 			NewPoint.SetExtents(FVector(50.0f, 50.0f, 50.0f));
 			NewPoint.Density = 1.0f;
-			NewPoint.Seed = FMath::Rand();
+			// Deterministic seed based on indices for reproducible PCG results
+			NewPoint.Seed = GetTypeHash(FVector2f(RoadPoint)) ^ (RoadIndex * 1000 + PointIndex);
 
 			// Set metadata
 			PCGMetadataEntryKey MetadataKey = Metadata->AddEntry();
@@ -224,7 +225,8 @@ UPCGPointData* UStreetMapBuildingsPCGData::CreatePointDataFromBuildings(FPCGCont
 		NewPoint.Transform = FTransform(FVector(Centroid.X, Centroid.Y, Height * 0.5f));
 		NewPoint.SetExtents(FVector(Extents2D.X, Extents2D.Y, Height * 0.5f));
 		NewPoint.Density = 1.0f;
-		NewPoint.Seed = FMath::Rand();
+		// Deterministic seed based on building index and centroid for reproducible PCG results
+		NewPoint.Seed = GetTypeHash(FVector2f(Centroid)) ^ BuildingIndex;
 
 		// Set metadata
 		PCGMetadataEntryKey MetadataKey = Metadata->AddEntry();

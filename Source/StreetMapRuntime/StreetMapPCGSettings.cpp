@@ -107,7 +107,8 @@ bool FPCGStreetMapElement::ExecuteInternal(FPCGContext* Context) const
 				NewPoint.Transform = FTransform(FVector(RoadPoint.X, RoadPoint.Y, 0.0f));
 				NewPoint.SetExtents(FVector(50.0f, 50.0f, 50.0f));
 				NewPoint.Density = 1.0f;
-				NewPoint.Seed = FMath::Rand();
+				// Deterministic seed based on indices for reproducible PCG results
+				NewPoint.Seed = GetTypeHash(FVector2f(RoadPoint)) ^ (RoadIndex * 1000 + PointIndex);
 
 				// Set metadata
 				PCGMetadataEntryKey MetadataKey = Metadata->AddEntry();
@@ -186,7 +187,8 @@ bool FPCGStreetMapElement::ExecuteInternal(FPCGContext* Context) const
 			NewPoint.Transform = FTransform(FVector(Centroid.X, Centroid.Y, Height * 0.5f));
 			NewPoint.SetExtents(FVector(FMath::Max(Extents2D.X, 50.0f), FMath::Max(Extents2D.Y, 50.0f), Height * 0.5f));
 			NewPoint.Density = 1.0f;
-			NewPoint.Seed = FMath::Rand();
+			// Deterministic seed based on building index and centroid for reproducible PCG results
+			NewPoint.Seed = GetTypeHash(FVector2f(Centroid)) ^ BuildingIndex;
 
 			// Set metadata
 			PCGMetadataEntryKey MetadataKey = Metadata->AddEntry();
