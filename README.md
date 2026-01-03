@@ -1,6 +1,6 @@
-# Street Map Plugin for Unreal Engine
+# Street Map Plugin for Unreal Engine 5.7
 
-This plugin allows you to import **OpenStreetMap** XML data into your **Unreal Engine** project as a new StreetMap asset type.  You can use the example **Street Map Component** to render streets and buildings.
+This plugin allows you to import **OpenStreetMap** XML data into your **Unreal Engine** project as a new StreetMap asset type. You can use the example **Street Map Component** to render streets and buildings, and the new **PCG Graph integration** to procedurally generate content based on map data.
 
 ![UE4OSMBrooklyn](Docs/UE4OSMBrooklyn.png)
 
@@ -9,6 +9,36 @@ This plugin allows you to import **OpenStreetMap** XML data into your **Unreal E
 Have fun!!  --[Mike](http://twitter.com/mike_fricker)
 [LICENSE.txt](LICENSE.txt)
 *(Note: This plugin is a just a fun weekend project and not officially supported by Epic.)*
+
+
+## Unreal Engine 5.7 Features
+
+This version has been updated for **Unreal Engine 5.7** with the following enhancements:
+
+### PCG (Procedural Content Generation) Graph Integration
+
+The plugin now includes full PCG Graph support, allowing you to use street map data as input for procedural content generation:
+
+- **Street Map Data Node**: A new PCG node that outputs road and building data as PCG point data with rich metadata
+- **Roads Output**: Get road points with metadata including RoadName, RoadType, RoadIndex, PointIndex, and IsOneWay
+- **Buildings Output**: Get building centroids with metadata including BuildingName, Height, BuildingLevels, BuildingIndex, and VertexCount
+- **Filtering Options**: Filter roads by type (Highway, MajorRoad, Street) and buildings by minimum height
+
+### Street Map Subsystem
+
+Following Lyra/City Sample architecture patterns, the plugin now includes a World Subsystem:
+
+- **UStreetMapSubsystem**: Manages street map data within a world
+- Register/unregister street maps and components
+- Query functions like `FindNearestRoadPoint` and `FindBuildingsInRadius`
+- Blueprint-accessible delegates for map registration events
+
+### API Updates
+
+- Updated to modern UE 5.7 module syntax
+- Removed deprecated EditorStyle dependency
+- Updated include paths for newer Engine API
+- PCHUsage set to UseExplicitOrSharedPCHs for faster compilation
 
 
 ## Quick Start
@@ -95,6 +125,64 @@ The generated street map mesh has vertex colors and normals, and you can assign 
 There are various "tweakable" variables to control how the renderable mesh is generated.  You can find these at the top of the *UStreetMapComponent::GenerateMesh()* function body.
 
 *(Street Map Component also serves as a straightforward example of how to write your own primitive components in UE.)*
+
+
+### Using PCG Graphs with Street Map Data
+
+The plugin provides a **Street Map Data** PCG node that can be used to procedurally generate content based on imported OpenStreetMap data.
+
+**Basic Usage:**
+
+1. Create a new PCG Graph asset
+2. Add a "Street Map Data" node to your graph
+3. Configure the node settings:
+   - Assign your imported Street Map asset
+   - Enable/disable Roads and/or Buildings output
+   - Configure filtering options as needed
+4. Connect the output pins to other PCG nodes for processing
+
+**Available Output Pins:**
+
+- **Roads**: Point data for each road point, with metadata:
+  - `RoadName` (String): Name of the road
+  - `RoadType` (Int32): 0=Street, 1=MajorRoad, 2=Highway, 3=Other
+  - `RoadIndex` (Int32): Index of the road in the street map
+  - `PointIndex` (Int32): Index of this point along the road
+  - `IsOneWay` (Bool): Whether the road is one-way
+
+- **Buildings**: Point data for each building centroid, with metadata:
+  - `BuildingName` (String): Name of the building
+  - `Height` (Double): Building height in centimeters
+  - `BuildingLevels` (Int32): Number of floors
+  - `BuildingIndex` (Int32): Index of the building in the street map
+  - `VertexCount` (Int32): Number of polygon vertices
+
+**Example Use Cases:**
+
+- Place street lights along roads using road point data
+- Spawn vegetation in areas between buildings
+- Generate procedural signs based on road names
+- Create LOD meshes for buildings based on building data
+
+
+### Street Map Subsystem
+
+The **UStreetMapSubsystem** provides a centralized way to access street map data in your world:
+
+```cpp
+// Get the subsystem
+UStreetMapSubsystem* Subsystem = UStreetMapSubsystem::Get(WorldContextObject);
+
+// Find the nearest road point
+int32 RoadIndex, PointIndex;
+if (Subsystem->FindNearestRoadPoint(Location, RoadIndex, PointIndex))
+{
+    // Use the road data
+}
+
+// Find buildings within a radius
+TArray<int32> BuildingIndices = Subsystem->FindBuildingsInRadius(Location, 5000.0f);
+```
 
 
 ### OSM Files

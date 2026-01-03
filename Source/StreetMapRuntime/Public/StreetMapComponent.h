@@ -109,6 +109,10 @@ protected:
 
 public:
 
+	// UActorComponent interface
+	virtual void InitializeComponent() override;
+	virtual void UninitializeComponent() override;
+
 	// UPrimitiveComponent interface
 	virtual  UBodySetup* GetBodySetup() override;
 	virtual FPrimitiveSceneProxy* CreateSceneProxy() override;

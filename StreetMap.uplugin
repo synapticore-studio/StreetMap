@@ -1,9 +1,10 @@
 {
 	"FileVersion" : 3,
-	"Version" : 1,
-	"VersionName" : "1.0",
+	"Version" : 2,
+	"VersionName" : "2.0",
+	"EngineVersion" : "5.7.0",
 	"FriendlyName" : "Street Map",
-	"Description" : "Import and render OpenStreetMap data",
+	"Description" : "Import and render OpenStreetMap data with PCG Graph integration",
 	"Category" : "Importers",
 	"CreatedBy" : "Mike Fricker",
 	"CreatedByURL" : "http://twitter.com/mike_fricker",
@@ -27,5 +28,12 @@
 			"Type" : "Editor",
 			"LoadingPhase" : "Default"
 		}
-  ]
+	],
+	"Plugins" :
+	[
+		{
+			"Name" : "PCG",
+			"Enabled" : true
+		}
+	]
 }

@@ -1,7 +1,9 @@
 #pragma once
-#include "Runtime/Engine/Public/PrimitiveSceneProxy.h"
-#include "Runtime/Engine/Public/LocalVertexFactory.h"
-#include "Runtime/Engine/Public/DynamicMeshBuilder.h"
+
+#include "CoreMinimal.h"
+#include "PrimitiveSceneProxy.h"
+#include "LocalVertexFactory.h"
+#include "DynamicMeshBuilder.h"
 #include "StreetMapSceneProxy.generated.h"
 
 /**	A single vertex on a street map mesh */

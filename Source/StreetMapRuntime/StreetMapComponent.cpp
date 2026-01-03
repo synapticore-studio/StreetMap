@@ -1,8 +1,9 @@
 #include "StreetMapComponent.h"
 #include "StreetMapSceneProxy.h"
+#include "StreetMapSubsystem.h"
 #include "NavigationSystem.h"
-#include "Runtime/Engine/Classes/Engine/StaticMesh.h"
-#include "Runtime/Engine/Public/StaticMeshResources.h"
+#include "Engine/StaticMesh.h"
+#include "StaticMeshResources.h"
 #include "PolygonTools.h"
 #include "PhysicsEngine/BodySetup.h"
 
@@ -24,9 +25,8 @@ UStreetMapComponent::UStreetMapComponent(const FObjectInitializer& ObjectInitial
 	PrimaryComponentTick.bCanEverTick = false;
 	this->bAutoActivate = false;	// NOTE: Components instantiated through C++ are not automatically active, so they'll only tick once and then go to sleep!
 
-	// We don't currently need InitializeComponent() to be called on us.  This can be overridden in a
-	// derived class though.
-	bWantsInitializeComponent = false;
+	// We want to initialize the component for subsystem registration
+	bWantsInitializeComponent = true;
 
 	// Turn on shadows.  It looks better.
 	CastShadow = true;
@@ -40,6 +40,30 @@ UStreetMapComponent::UStreetMapComponent(const FObjectInitializer& ObjectInitial
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> DefaultMaterialAsset(TEXT("/StreetMap/StreetMapDefaultMaterial"));
 	StreetMapDefaultMaterial = DefaultMaterialAsset.Object;
 
+}
+
+
+void UStreetMapComponent::InitializeComponent()
+{
+	Super::InitializeComponent();
+
+	// Register with subsystem
+	if (UStreetMapSubsystem* Subsystem = UStreetMapSubsystem::Get(this))
+	{
+		Subsystem->RegisterComponent(this);
+	}
+}
+
+
+void UStreetMapComponent::UninitializeComponent()
+{
+	// Unregister from subsystem
+	if (UStreetMapSubsystem* Subsystem = UStreetMapSubsystem::Get(this))
+	{
+		Subsystem->UnregisterComponent(this);
+	}
+
+	Super::UninitializeComponent();
 }
 
 
