@@ -1,5 +1,7 @@
 # Street Map Plugin for Unreal Engine 5.7
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N71WOHZ3)
+
 This plugin allows you to import **OpenStreetMap** XML data into your **Unreal Engine** project as a new StreetMap asset type. You can use the example **Street Map Component** to render streets and buildings, and the new **PCG Graph integration** to procedurally generate content based on map data.
 
 ![UE4OSMBrooklyn](Docs/UE4OSMBrooklyn.png)
@@ -229,4 +231,3 @@ I'm not planning to actively update the plugin on a regular basis, but if any cr
 For bugs, please [file an issue](https://github.com/ue4plugins/StreetMap/issues), submit a [pull request](https://github.com/ue4plugins/StreetMap/pulls?q=is%3Aopen+is%3Apr) or catch me [on Twitter](http://twitter.com/mike_fricker).
 
 Finally, a **big thanks** to the [OpenStreetMap Foundation](http://wiki.osmfoundation.org/wiki/Main_Page) and the fantastic community who contribute map data and maintain the database.
-
